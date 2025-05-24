@@ -102,12 +102,12 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
         </DialogHeader>
 
         {/* KingsChat Sign-in Button */}
-        <div className="mb-4 flex items-center justify-center">
+        {/* <div className="mb-4 flex items-center justify-center">
           <a href="https://accounts.kingsch.at/?client_id=com.kingschat&scopes=%5B%22conference_calls%22%5D&post_redirect=true&redirect_uri=http://localhost:3000/" className="kc-web-sdk-btn"></a>
-        </div>
+        </div> */}
 
         {/* Divider */}
-        <div className="relative my-4">
+        {/* <div className="relative my-4">
           <div className="absolute inset-0 flex items-center">
             <div className="w-full border-t border-gray-300"></div>
           </div>
@@ -116,7 +116,7 @@ export default function LoginModal({ isOpen, onClose }: LoginModalProps) {
               Or continue with
             </span>
           </div>
-        </div>
+        </div> */}
 
         <FormWrapper
           initialValues={initialValues}
