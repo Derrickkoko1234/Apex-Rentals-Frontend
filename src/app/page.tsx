@@ -7,6 +7,7 @@ import LocationCard from "@/components/LocationCard";
 // Sample blog post data
 const propertyDetails = [
   {
+    id: "1",
     image: "/banner.jpg",
     title: "Luxury Villa in Lagos",
     location: "Lagos, Nigeria",
@@ -17,6 +18,7 @@ const propertyDetails = [
     bathrooms: 2,
   },
   {
+    id: "2",
     image: "/banner.jpg",
     title: "Modern Apartment in Victoria Island",
     location: "Lagos, Nigeria",
@@ -27,6 +29,7 @@ const propertyDetails = [
     bathrooms: 1,
   },
   {
+    id: "3",
     image: "/banner.jpg",
     title: "Beachfront House in Lekki",
     location: "Lagos, Nigeria",
@@ -88,7 +91,9 @@ export default function Home() {
 
           <div className="flex flex-wrap justify-around gap-8">
             {propertyDetails.map((property, index) => (
-              <PropertyCard key={index} property={property} />
+              <Link key={index} href={`/properties/${property.id}`}>
+                <PropertyCard property={property} />
+              </Link>
             ))}
           </div>
         </div>
@@ -105,7 +110,9 @@ export default function Home() {
 
           <div className="flex flex-wrap justify-around gap-8">
             {propertyDetails.map((property, index) => (
-              <PropertyCard key={index} property={property} />
+              <Link key={index} href={`/properties/${property.id}`}>
+                <PropertyCard property={property} />
+              </Link>
             ))}
           </div>
 					{/* add main button */}

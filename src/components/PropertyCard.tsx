@@ -1,9 +1,11 @@
 import Image from "next/image";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Star, Heart, Share2, Repeat, BedDouble, Bath } from "lucide-react";
 
 type Property = {
+  id: string;
   image: string;
   title: string;
   location: string;
@@ -16,18 +18,23 @@ type Property = {
 
 type PropertyCardProps = {
   property: Property;
-  onReserve?: () => void;
 };
 
-export default function PropertyCard({
-  property,
-  onReserve,
-}: PropertyCardProps) {
-  const { image, title, location, price, rating, beds, bedrooms, bathrooms } =
-    property;
+export default function PropertyCard({ property }: PropertyCardProps) {
+  const {
+    id,
+    image,
+    title,
+    location,
+    price,
+    rating,
+    beds,
+    bedrooms,
+    bathrooms,
+  } = property;
 
   return (
-    <div className="bg-white rounded-3xl shadow-lg overflow-hidden relative flex flex-col w-full max-w-sm min-w-[300px] transition-transform hover:-translate-y-2 hover:shadow-2xl duration-200">
+    <div className="bg-white rounded-3xl shadow-lg overflow-hidden relative flex flex-col w-[350px] transition-transform hover:-translate-y-2 hover:shadow-2xl duration-200">
       <div className="relative w-full h-48">
         <Image
           src={image}
@@ -102,12 +109,11 @@ export default function PropertyCard({
         </div>
 
         <hr className="my-2" />
-        <Button
-          className="w-full mt-2 mb-3 rounded-xl text-base font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow"
-          onClick={onReserve}
-        >
-          Reserve
-        </Button>
+        <Link href={`/properties/${id}`}>
+          <Button className="w-full mt-2 mb-3 rounded-xl text-base font-semibold bg-blue-600 hover:bg-blue-700 text-white shadow">
+            Reserve
+          </Button>
+        </Link>
       </div>
     </div>
   );
