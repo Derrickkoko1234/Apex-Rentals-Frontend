@@ -1,17 +1,26 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { Star, Heart, Share2, MapPin, Users, BedDouble, Bath } from "lucide-react";
+import {
+  Star,
+  Heart,
+  Share2,
+  MapPin,
+  Users,
+  BedDouble,
+  Bath,
+} from "lucide-react";
 import Map from "@/components/Map";
+import { DatePicker } from "@/components/ui/date-picker";
+import { useState } from "react";
+import { differenceInDays } from "date-fns";
 
 // Sample property data - in a real app, this would come from an API or database
 const properties = {
   "1": {
-    images: [
-      "/banner.jpg",
-      "/banner.jpg",
-      "/banner.jpg",
-    ],
+    images: ["/banner.jpg", "/banner.jpg", "/banner.jpg"],
     title: "Luxury Villa in Lagos",
     location: "Lagos, Nigeria",
     price: "1,000,000",
@@ -47,7 +56,8 @@ const properties = {
         desc: "Close to major attractions",
       },
     ],
-    description: "Luxurious villa with modern amenities and stunning views. Perfect for families and large groups.",
+    description:
+      "Luxurious villa with modern amenities and stunning views. Perfect for families and large groups.",
     gallery: [
       {
         src: "/banner.jpg",
@@ -64,11 +74,7 @@ const properties = {
     longitude: 3.406448,
   },
   "2": {
-    images: [
-      "/banner.jpg",
-      "/banner.jpg",
-      "/banner.jpg",
-    ],
+    images: ["/banner.jpg", "/banner.jpg", "/banner.jpg"],
     title: "Modern Apartment in Victoria Island",
     location: "Lagos, Nigeria",
     price: "500,000",
@@ -97,7 +103,8 @@ const properties = {
         desc: "Contemporary design and amenities",
       },
     ],
-    description: "Stylish apartment in the heart of Victoria Island. Perfect for professionals and small families.",
+    description:
+      "Stylish apartment in the heart of Victoria Island. Perfect for professionals and small families.",
     gallery: [
       {
         src: "/banner.jpg",
@@ -109,11 +116,7 @@ const properties = {
     longitude: 3.424741,
   },
   "3": {
-    images: [
-      "/banner.jpg",
-      "/banner.jpg",
-      "/banner.jpg",
-    ],
+    images: ["/banner.jpg", "/banner.jpg", "/banner.jpg"],
     title: "Beachfront House in Lekki",
     location: "Lagos, Nigeria",
     price: "2,000,000",
@@ -143,7 +146,8 @@ const properties = {
         desc: "Direct access to the beach",
       },
     ],
-    description: "Luxurious beachfront property with stunning ocean views. Perfect for large groups and special occasions.",
+    description:
+      "Luxurious beachfront property with stunning ocean views. Perfect for large groups and special occasions.",
     gallery: [
       {
         src: "/banner.jpg",
@@ -161,8 +165,14 @@ const properties = {
   },
 };
 
-export default function PropertyDetailsPage({ params }: { params: { id: string } }) {
+export default function PropertyDetailsPage({
+  params,
+}: {
+  params: { id: string };
+}) {
   const property = properties[params.id as keyof typeof properties];
+  const [checkIn, setCheckIn] = useState<Date>();
+  const [checkOut, setCheckOut] = useState<Date>();
 
   if (!property) {
     return (
@@ -175,11 +185,23 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
     );
   }
 
+  const calculateTotalPrice = () => {
+    if (!checkIn || !checkOut) return property.price;
+    const nights = differenceInDays(checkOut, checkIn);
+    const basePrice = parseInt(property.price.replace(/,/g, ""));
+    return (basePrice * nights).toLocaleString();
+  };
+
+  const nights = checkIn && checkOut ? differenceInDays(checkOut, checkIn) : 0;
+
   return (
     <div className="max-w-7xl mx-auto">
       {/* Header with back button */}
       <div className="p-4 border-b">
-        <Link href="/" className="text-blue-600 hover:underline flex items-center gap-2">
+        <Link
+          href="/properties"
+          className="text-blue-600 hover:underline flex items-center gap-2"
+        >
           ← Back to properties
         </Link>
       </div>
@@ -201,7 +223,10 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
               </div>
             </div>
             {property.images.slice(1, 3).map((image, index) => (
-              <div key={index} className="relative h-[200px] rounded-xl overflow-hidden">
+              <div
+                key={index}
+                className="relative h-[200px] rounded-xl overflow-hidden"
+              >
                 <Image
                   src={image}
                   alt={`${property.title} - Image ${index + 2}`}
@@ -259,15 +284,22 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
           {/* Description */}
           <div className="mb-8">
             <h2 className="text-2xl font-semibold mb-4">About this place</h2>
-            <p className="text-gray-700 leading-relaxed">{property.description}</p>
+            <p className="text-gray-700 leading-relaxed">
+              {property.description}
+            </p>
           </div>
 
           {/* Amenities */}
           <div className="mb-8">
-            <h2 className="text-2xl font-semibold mb-4">What this place offers</h2>
+            <h2 className="text-2xl font-semibold mb-4">
+              What this place offers
+            </h2>
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {property.amenities.map((amenity, index) => (
-                <div key={index} className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
+                <div
+                  key={index}
+                  className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg"
+                >
                   <span className="text-xl">{amenity.icon}</span>
                   <span>{amenity.label}</span>
                 </div>
@@ -280,7 +312,11 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
             <h2 className="text-2xl font-semibold mb-4">Location</h2>
             <div className="text-gray-700 mb-4">{property.address}</div>
             <div className="relative h-[300px] rounded-xl overflow-hidden">
-              <Map latitude={property.latitude} longitude={property.longitude} popupText={property.title} />
+              <Map
+                latitude={property.latitude}
+                longitude={property.longitude}
+                popupText={property.title}
+              />
             </div>
           </div>
         </div>
@@ -297,23 +333,52 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
               <div className="flex items-center gap-1">
                 <Star className="w-5 h-5 text-yellow-400 fill-yellow-400" />
                 <span className="font-semibold">{property.rating}</span>
-                <span className="text-gray-500">({property.reviewCount} reviews)</span>
+                <span className="text-gray-500">
+                  ({property.reviewCount} reviews)
+                </span>
               </div>
             </div>
 
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-2">
-                <div className="border rounded-lg p-3">
-                  <div className="text-sm text-gray-500">Check-in</div>
-                  <div className="font-medium">Add dates</div>
+                <div>
+                  <div className="text-sm text-gray-500 mb-1">Check-in</div>
+                  <DatePicker
+                    date={checkIn}
+                    onSelect={setCheckIn}
+                    placeholder="Add dates"
+                  />
                 </div>
-                <div className="border rounded-lg p-3">
-                  <div className="text-sm text-gray-500">Check-out</div>
-                  <div className="font-medium">Add dates</div>
+                <div>
+                  <div className="text-sm text-gray-500 mb-1">Check-out</div>
+                  <DatePicker
+                    date={checkOut}
+                    onSelect={setCheckOut}
+                    placeholder="Add dates"
+                    disabled={!checkIn}
+                  />
                 </div>
               </div>
 
-              <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 rounded-xl text-lg">
+              {nights > 0 && (
+                <div className="border-t pt-4 space-y-2">
+                  <div className="flex justify-between">
+                    <span>
+                      ₦{property.price} x {nights} nights
+                    </span>
+                    <span>₦{calculateTotalPrice()}</span>
+                  </div>
+                  <div className="flex justify-between font-semibold">
+                    <span>Total</span>
+                    <span>₦{calculateTotalPrice()}</span>
+                  </div>
+                </div>
+              )}
+
+              <Button
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-6 rounded-xl text-lg"
+                disabled={!checkIn || !checkOut}
+              >
                 Reserve
               </Button>
 
@@ -334,8 +399,13 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
                 className="rounded-full"
               />
               <div>
-                <div className="font-semibold text-lg">Hosted by {property.host.name}</div>
-                <div className="text-gray-500">Joined in {new Date().getFullYear() - property.host.yearsHosting}</div>
+                <div className="font-semibold text-lg">
+                  Hosted by {property.host.name}
+                </div>
+                <div className="text-gray-500">
+                  Joined in{" "}
+                  {new Date().getFullYear() - property.host.yearsHosting}
+                </div>
               </div>
             </div>
             <div className="grid grid-cols-3 gap-4 text-center">
@@ -348,7 +418,9 @@ export default function PropertyDetailsPage({ params }: { params: { id: string }
                 <div className="text-sm text-gray-500">Reviews</div>
               </div>
               <div>
-                <div className="font-semibold">{property.host.yearsHosting}</div>
+                <div className="font-semibold">
+                  {property.host.yearsHosting}
+                </div>
                 <div className="text-sm text-gray-500">Years hosting</div>
               </div>
             </div>
