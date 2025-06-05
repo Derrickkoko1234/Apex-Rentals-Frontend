@@ -170,13 +170,14 @@ export default function Navbar() {
                 </DropdownMenuContent>
               </DropdownMenu>
             ) : (
-              <Button
-                onClick={() => setShowLoginModal(true)}
-                variant="outline"
-                className="rounded-full cursor-pointer hover:cursor-pointer"
-              >
-                Sign In
-              </Button>
+              <Link href="/auth/login">
+                <Button
+                  variant="outline"
+                  className="rounded-full cursor-pointer hover:cursor-pointer"
+                >
+                  Sign In
+                </Button>
+              </Link>
             )}
           </div>
 
@@ -231,16 +232,11 @@ export default function Navbar() {
                 Sign Out
               </Button>
             ) : (
-              <Button
-                onClick={() => {
-                  setShowLoginModal(true);
-                  setIsMobileMenuOpen(false);
-                }}
-                variant="outline"
-                className="w-full mt-2 rounded-full"
-              >
-                Sign In
-              </Button>
+              <Link href="/auth/login" className="w-full">
+                <Button variant="outline" className="w-full mt-2 rounded-full">
+                  Sign In
+                </Button>
+              </Link>
             )}
           </div>
         </div>
