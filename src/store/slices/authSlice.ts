@@ -1,10 +1,21 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthState, LoginCredentials } from "@/types/auth.types";
-import { loginUser, logoutUser } from "@/api/auth/auth";
+
+export interface User {
+  id: string;
+  name: string;
+  email: string;
+  type: "renter" | "owner";
+}
+
+interface AuthState {
+  user: User | null;
+  isAuthenticated: boolean;
+  loading: boolean;
+  error: string | null;
+}
 
 const initialState: AuthState = {
   user: null,
-  token: null,
   isAuthenticated: false,
   loading: false,
   error: null,
@@ -12,30 +23,22 @@ const initialState: AuthState = {
 
 export const login = createAsyncThunk(
   "auth/login",
-  async (credentials: LoginCredentials, { rejectWithValue }) => {
-    try {
-      return await loginUser(credentials);
-    } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Network error occurred"
-      );
-    }
+  async (credentials: { email: string; password: string }) => {
+    // TODO: Implement actual API call
+    // For now, return mock data
+    return {
+      id: "1",
+      name: "John Doe",
+      email: credentials.email,
+      type: "renter" as const,
+    };
   }
 );
 
-export const logout = createAsyncThunk(
-  "auth/logout",
-  async (_, { rejectWithValue }) => {
-    try {
-      await logoutUser();
-      return null;
-    } catch (error) {
-      return rejectWithValue(
-        error instanceof Error ? error.message : "Logout failed"
-      );
-    }
-  }
-);
+export const logout = createAsyncThunk("auth/logout", async () => {
+  // TODO: Implement actual API call
+  return null;
+});
 
 const authSlice = createSlice({
   name: "auth",
@@ -43,37 +46,24 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      // Login cases
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
       })
       .addCase(login.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.data.user;
-        state.token = action.payload.data.token;
         state.isAuthenticated = true;
+        state.user = action.payload;
       })
       .addCase(login.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload as string;
-      })
-      // Logout cases
-      .addCase(logout.pending, (state) => {
-        state.loading = true;
+        state.error = action.error.message || "Login failed";
       })
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
-        state.token = null;
         state.isAuthenticated = false;
-        state.loading = false;
-      })
-      .addCase(logout.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload as string;
       });
   },
 });
 
-// export const { setCredentials, clearAuth } = authSlice.actions;
 export default authSlice.reducer;
