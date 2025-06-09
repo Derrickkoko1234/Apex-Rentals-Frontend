@@ -1,14 +1,14 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+// import { useEffect } from "react";
+// import { useRouter } from "next/navigation";
 import DashboardLayout from "@/components/layout/DashboardLayout";
 import { useAppSelector } from "@/store/hooks";
 
 export default function DashboardPage() {
-  const router = useRouter();
-  const { user, isAuthenticated } = useAppSelector((state) => state.auth);
+  // const router = useRouter();
+  const { user } = useAppSelector((state) => state.auth);
 
   // useEffect(() => {
   //   if (!isAuthenticated) {
