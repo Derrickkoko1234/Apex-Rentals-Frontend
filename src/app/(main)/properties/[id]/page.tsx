@@ -169,6 +169,7 @@ export default function PropertyDetailsPage({
   params,
 }: {
   params: { id: string };
+  searchParams: { [key: string]: string | string[] | undefined };
 }) {
   const property = properties[params.id as keyof typeof properties];
   const [checkIn, setCheckIn] = useState<Date>();
