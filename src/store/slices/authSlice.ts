@@ -1,11 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  type: "renter" | "owner";
-}
+import { registerUser, loginUser, logoutUser } from "@/api/auth/auth";
+import { LoginCredentials, RegisterCredentials, User } from "@/types/auth.types";
 
 interface AuthState {
   user: User | null;
@@ -23,20 +18,28 @@ const initialState: AuthState = {
 
 export const login = createAsyncThunk(
   "auth/login",
-  async (credentials: { email: string; password: string }) => {
-    // TODO: Implement actual API call
-    // For now, return mock data
-    return {
-      id: "1",
-      name: "John Doe",
-      email: credentials.email,
-      type: "renter" as const,
-    };
+  async (credentials: LoginCredentials) => {
+    const response = await loginUser(credentials);
+    if (!response.data) {
+      throw new Error("Login failed");
+    }
+    return response.data.user;
+  }
+);
+
+export const register = createAsyncThunk(
+  "auth/register",
+  async (credentials: RegisterCredentials) => {
+    const response = await registerUser(credentials);
+    if (!response.data) {
+      throw new Error("Registration failed");
+    }
+    return response.data.user;
   }
 );
 
 export const logout = createAsyncThunk("auth/logout", async () => {
-  // TODO: Implement actual API call
+  await logoutUser();
   return null;
 });
 
@@ -46,6 +49,7 @@ const authSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
+      // Login cases
       .addCase(login.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -59,9 +63,25 @@ const authSlice = createSlice({
         state.loading = false;
         state.error = action.error.message || "Login failed";
       })
+      // Register cases
+      .addCase(register.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(register.fulfilled, (state, action) => {
+        state.loading = false;
+        state.isAuthenticated = true;
+        state.user = action.payload;
+      })
+      .addCase(register.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message || "Registration failed";
+      })
+      // Logout cases
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.isAuthenticated = false;
+        state.error = null;
       });
   },
 });
