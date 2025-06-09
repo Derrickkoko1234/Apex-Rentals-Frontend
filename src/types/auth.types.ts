@@ -9,8 +9,16 @@ export interface User {
 }
 
 export interface LoginCredentials {
-  name: string;
   email: string;
+  password: string;
+}
+
+export interface RegisterCredentials {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
 }
 
 export interface AuthState {

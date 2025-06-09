@@ -30,6 +30,11 @@ export const loginUser = async (
 };
 
 /**
+ * Register a new user
+ */
+
+
+/**
  * Logout user
  */
 export const logoutUser = async (): Promise<void> => {
