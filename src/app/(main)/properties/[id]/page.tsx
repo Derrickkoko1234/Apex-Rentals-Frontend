@@ -18,173 +18,64 @@ import { useState } from "react";
 import { differenceInDays } from "date-fns";
 
 // Sample property data - in a real app, this would come from an API or database
-const properties = {
-  "1": {
-    images: ["/banner.jpg", "/banner.jpg", "/banner.jpg"],
-    title: "Luxury Villa in Lagos",
-    location: "Lagos, Nigeria",
-    price: "1,000,000",
-    rating: 4,
-    reviewCount: 2,
-    beds: 5,
-    rooms: 3,
-    bathrooms: 2,
-    amenities: [
-      { icon: "🌊", label: "waterfront" },
-      { icon: "🍳", label: "kitchen" },
-      { icon: "📶", label: "Wifi" },
-      { icon: "💻", label: "Dedicated workspace" },
-      { icon: "🅿️", label: "Free street parking" },
-    ],
-    address: "Plot 217 CE Avenue, Lekki, Lagos Nigeria",
-    host: {
-      name: "John Doe",
-      yearsHosting: 5,
-      rating: 4.5,
-      reviewCount: 2,
-      image: "/host.jpg",
-    },
-    highlights: [
-      {
-        icon: "🏞️",
-        title: "Beautiful area",
-        desc: "This home is in a scenic location",
-      },
-      {
-        icon: "🗺️",
-        title: "Prime location",
-        desc: "Close to major attractions",
-      },
-    ],
-    description:
-      "Luxurious villa with modern amenities and stunning views. Perfect for families and large groups.",
-    gallery: [
-      {
-        src: "/banner.jpg",
-        label: "Master Bedroom",
-        desc: "1 king bed",
-      },
-      {
-        src: "/banner.jpg",
-        label: "Guest Bedroom",
-        desc: "2 queen beds",
-      },
-    ],
-    latitude: 6.465422,
-    longitude: 3.406448,
-  },
-  "2": {
-    images: ["/banner.jpg", "/banner.jpg", "/banner.jpg"],
-    title: "Modern Apartment in Victoria Island",
-    location: "Lagos, Nigeria",
-    price: "500,000",
-    rating: 5,
-    reviewCount: 1,
-    beds: 3,
-    rooms: 2,
-    bathrooms: 1,
-    amenities: [
-      { icon: "🌊", label: "waterfront" },
-      { icon: "🍳", label: "kitchen" },
-      { icon: "📶", label: "Wifi" },
-    ],
-    address: "Victoria Island, Lagos Nigeria",
-    host: {
-      name: "Jane Smith",
-      yearsHosting: 3,
-      rating: 5.0,
-      reviewCount: 1,
-      image: "/host.jpg",
-    },
-    highlights: [
-      {
-        icon: "🏢",
-        title: "Modern living",
-        desc: "Contemporary design and amenities",
-      },
-    ],
-    description:
-      "Stylish apartment in the heart of Victoria Island. Perfect for professionals and small families.",
-    gallery: [
-      {
-        src: "/banner.jpg",
-        label: "Bedroom",
-        desc: "1 queen bed",
-      },
-    ],
-    latitude: 6.428055,
-    longitude: 3.424741,
-  },
-  "3": {
-    images: ["/banner.jpg", "/banner.jpg", "/banner.jpg"],
-    title: "Beachfront House in Lekki",
-    location: "Lagos, Nigeria",
-    price: "2,000,000",
+const property = {
+  images: ["/banner.jpg", "/banner.jpg", "/banner.jpg"],
+  title: "Luxury Villa in Lagos",
+  location: "Lagos, Nigeria",
+  price: "1,000,000",
+  rating: 4,
+  reviewCount: 2,
+  beds: 5,
+  rooms: 3,
+  bathrooms: 2,
+  amenities: [
+    { icon: "🌊", label: "waterfront" },
+    { icon: "🍳", label: "kitchen" },
+    { icon: "📶", label: "Wifi" },
+    { icon: "💻", label: "Dedicated workspace" },
+    { icon: "🅿️", label: "Free street parking" },
+  ],
+  address: "Plot 217 CE Avenue, Lekki, Lagos Nigeria",
+  host: {
+    name: "John Doe",
+    yearsHosting: 5,
     rating: 4.5,
-    reviewCount: 3,
-    beds: 6,
-    rooms: 4,
-    bathrooms: 3,
-    amenities: [
-      { icon: "🌊", label: "waterfront" },
-      { icon: "🍳", label: "kitchen" },
-      { icon: "📶", label: "Wifi" },
-      { icon: "🏊", label: "Pool" },
-    ],
-    address: "Lekki, Lagos Nigeria",
-    host: {
-      name: "Mike Johnson",
-      yearsHosting: 8,
-      rating: 4.8,
-      reviewCount: 3,
-      image: "/host.jpg",
-    },
-    highlights: [
-      {
-        icon: "🏖️",
-        title: "Beachfront",
-        desc: "Direct access to the beach",
-      },
-    ],
-    description:
-      "Luxurious beachfront property with stunning ocean views. Perfect for large groups and special occasions.",
-    gallery: [
-      {
-        src: "/banner.jpg",
-        label: "Master Suite",
-        desc: "1 king bed",
-      },
-      {
-        src: "/banner.jpg",
-        label: "Guest Room",
-        desc: "2 queen beds",
-      },
-    ],
-    latitude: 6.434156,
-    longitude: 3.500356,
+    reviewCount: 2,
+    image: "/banner.jpg",
   },
+  highlights: [
+    {
+      icon: "🏞️",
+      title: "Beautiful area",
+      desc: "This home is in a scenic location",
+    },
+    {
+      icon: "🗺️",
+      title: "Prime location",
+      desc: "Close to major attractions",
+    },
+  ],
+  description:
+    "Luxurious villa with modern amenities and stunning views. Perfect for families and large groups.",
+  gallery: [
+    {
+      src: "/banner.jpg",
+      label: "Master Bedroom",
+      desc: "1 king bed",
+    },
+    {
+      src: "/banner.jpg",
+      label: "Guest Bedroom",
+      desc: "2 queen beds",
+    },
+  ],
+  latitude: 6.465422,
+  longitude: 3.406448,
 };
 
-export default function PropertyDetailsPage({
-  params,
-}: {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-}) {
-  const property = properties[params.id as keyof typeof properties];
+export default function PropertyDetailsPage() {
   const [checkIn, setCheckIn] = useState<Date>();
   const [checkOut, setCheckOut] = useState<Date>();
-
-  if (!property) {
-    return (
-      <div className="max-w-7xl mx-auto p-4">
-        <h1 className="text-2xl font-bold text-red-600">Property not found</h1>
-        <Link href="/" className="text-blue-600 hover:underline">
-          Return to home page
-        </Link>
-      </div>
-    );
-  }
 
   const calculateTotalPrice = () => {
     if (!checkIn || !checkOut) return property.price;
