@@ -2,7 +2,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
-  role: string;
+  role: "admin" | "renter" | "landlord";
   password?: string;
   createdAt?: string;
   updatedAt?: string;

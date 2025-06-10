@@ -21,7 +21,7 @@ import { logout } from "@/store/slices/authSlice";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
-  userType: "renter" | "owner";
+  userType: "renter" | "landlord";
 }
 
 export default function DashboardLayout({ children, userType }: DashboardLayoutProps) {

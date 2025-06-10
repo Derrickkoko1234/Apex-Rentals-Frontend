@@ -19,20 +19,19 @@ export default function DashboardPage() {
   // if (!isAuthenticated || !user) {
   //   return null;
   // }
-
   return (
-    <DashboardLayout userType={user?.type}>
+    <DashboardLayout userType={user?.role as "renter" | "landlord"}>
       <div className="space-y-6">
         <div>
           <h1 className="text-2xl font-bold">Welcome back, {user?.name}!</h1>
           <p className="text-gray-600">
-            Here's what's happening with your {user?.type === "renter" ? "bookings" : "properties"} today.
+            Here's what's happening with your {user?.role === "renter" ? "bookings" : "properties"} today.
           </p>
         </div>
 
         {/* Stats Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          {user?.type === "renter" ? (
+          {user?.role === "renter" ? (
             <>
               <div className="bg-white p-6 rounded-xl shadow-sm">
                 <div className="text-2xl font-bold text-blue-600">2</div>
@@ -77,7 +76,7 @@ export default function DashboardPage() {
         <div className="bg-white rounded-xl shadow-sm p-6">
           <h2 className="text-xl font-semibold mb-4">Recent Activity</h2>
           <div className="space-y-4">
-            {user?.type === "renter" ? (
+            {user?.role === "renter" ? (
               <>
                 <div className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
                   <div>
