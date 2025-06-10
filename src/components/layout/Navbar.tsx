@@ -6,7 +6,6 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
-import LoginModal from "./LoginModal";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -241,12 +240,6 @@ export default function Navbar() {
           </div>
         </div>
       )}
-
-      {/* Login Modal */}
-      <LoginModal
-        isOpen={showLoginModal}
-        onClose={() => setShowLoginModal(false)}
-      />
     </nav>
   );
 }
